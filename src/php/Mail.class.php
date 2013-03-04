@@ -1,43 +1,17 @@
 <?php
 
+echo getcwd();
 if(file_exists("../../../ext/php/lib/swift_required.php"))
 	include_once "../../../ext/php/lib/swift_required.php";
+if(file_exists("../../mail/ext/php/lib/swift_required.php"))
+	include_once "../../mail/ext/php/lib/swift_required.php";
 if(file_exists("ext/php/lib/swift_required.php"))
 	include_once "ext/php/lib/swift_required.php";
 include_once "bootstrap.php";
 
 class Mail {
-	function concierge( $data) {
-		$c = new Config();
-
-		$from = array( $c->service["mail"] => $c->service["name"]);
-		$to = array( $c->service["mail"] => $c->service["name"]);
-		$subject = "Automatisch Incasso";
-
-		$transport = Swift_SmtpTransport::newInstance(
-				$c->mail['host'],
-				$c->mail['port']
-			);
-		$transport->setUsername($c->mail['username']);
-		$transport->setPassword($c->mail['password']);
-		$swift = Swift_Mailer::newInstance($transport);
-
-		$message = new Swift_Message($subject);
-		$message->setFrom($from);
-		$message->setBody(var_export($data, true), 'text/plain');
-		$message->setTo($to);
-
-		if ($recipients = $swift->send($message, $failures)) {
-			return true;
-		} else {
-			return false;
-			print_r($failures);
-		}
-
-	}
-
 	function send( $u) {
-		$c = new Config();
+		$c = new MailConfig();
 
 		$fullname = $u['name'];
 		$mail = $u['mail'];

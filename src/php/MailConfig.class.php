@@ -1,6 +1,6 @@
 <?php
 
-class Config {
+class MailConfig {
 	public $mail;
 
 	function __construct() {
