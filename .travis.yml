@@ -7,13 +7,12 @@ php:
 
 script:
   - sh sh/installmailchimp.sh
-  - sh sh/installsswift.sh
+  - sh sh/installswift.sh
   - phpunit --configuration .travis_phpunit.xml --coverage-text
-  - phantomjs hello.js
 
 before_script:
   - pecl -q install mongo && echo "extension=mongo.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
-  - mv ./src/php/Config.example.php ./src/php/Config.php
+  - mv ./src/php/Config.example.php ./src/php/Config.class.php
 
 services: mongodb
 

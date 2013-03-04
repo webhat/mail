@@ -1,6 +1,5 @@
 <?php
 
-echo getcwd();
 if(file_exists("../../../ext/php/lib/swift_required.php"))
 	include_once "../../../ext/php/lib/swift_required.php";
 if(file_exists("../../mail/ext/php/lib/swift_required.php"))
@@ -10,8 +9,8 @@ if(file_exists("ext/php/lib/swift_required.php"))
 include_once "bootstrap.php";
 
 class Mail {
-	function send( $u) {
-		$c = new MailConfig();
+	function send( $u, $mailbody = array()) {
+		$c = new Config();
 
 		$fullname = $u['name'];
 		$mail = $u['mail'];
@@ -25,7 +24,10 @@ class Mail {
 
 		$text = $c->service["name"] ." speaks plaintext";
 		// FIXME: HACK!!!
-		$html = "You can view your results <a href='*|LNLURL|*' target='_self'>here</a>.</div>";
+		if( !empty($mailbody) && array_key_exists( 'body', $mailbody))
+			$html = $mailbody['body'];
+		else
+			throw new MailException("No mail body");
 		//$subject = "Test";
 		$subject = $c->service["name"] .": ". $c->mail['default'];
 
@@ -33,8 +35,9 @@ class Mail {
 				"FNAME" => $fullname,
 				"_rcpt" => $mail,
 				"SUBJECT" =>$subject,
-				"LNLURL" => $c->mail['LNLURL']. $hash
 				);
+
+		$arr = array_merge( $arr, $mailbody);
 
 		$json = json_encode($arr);
 

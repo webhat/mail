@@ -9,14 +9,14 @@ LIBS=ext/php/libs
 LOCATION=http://apidocs.mailchimp.com/api/downloads/$ARCHIVE
 
 mkdir $DIR
-pushd $DIR
+cd $DIR
 
 wget -q $LOCATION
 unzip $ARCHIVE
 
 rm -f $ARCHIVE
 
-popd
+cd -
 
 mkdir -p $LIBS
 cp -Rf $DIR/MCAPI.class.php $LIBS
