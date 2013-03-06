@@ -14,8 +14,6 @@ class Mail {
 
 		$fullname = $u['name'];
 		$mail = $u['mail'];
-		$hash = $u['hash'];
-
 
 		$from = array( $c->service["from"] => $c->service["name"]);   
 		$to = array(
@@ -29,7 +27,7 @@ class Mail {
 		else
 			throw new MailException("No mail body");
 		//$subject = "Test";
-		$subject = $c->service["name"] .": ". $c->mail['default'];
+		$subject = $c->service["name"] .": ";
 
 		$arr = array(
 				"FNAME" => $fullname,
@@ -38,6 +36,9 @@ class Mail {
 				);
 
 		$arr = array_merge( $arr, $mailbody);
+
+		if($arr['SUBJECT'] != $subject)
+			$subject = $arr['SUBJECT'];
 
 		$json = json_encode($arr);
 
