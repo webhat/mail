@@ -1,0 +1,23 @@
+# see http://about.travis-ci.org/docs/user/languages/php/ for more hints
+language: php
+php:
+#  - 5.2
+  - 5.3
+  - 5.4
+
+script:
+  - sh sh/installmailchimp.sh
+  - sh sh/installswift.sh
+  - phpunit --configuration .travis_phpunit.xml --coverage-text
+
+before_script:
+  - pecl -q install mongo && echo "extension=mongo.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
+  - mv ./src/php/Config.example.php ./src/php/Config.class.php
+
+services: mongodb
+
+branches:
+  only:
+    - develop
+    - master
+
